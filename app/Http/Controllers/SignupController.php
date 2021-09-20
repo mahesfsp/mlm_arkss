@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Models\Product;
 class SignupController extends Controller
 {
     /**
@@ -24,8 +24,9 @@ class SignupController extends Controller
      */
     public function create()
     {
-        $product_data =DB::table('products')->select('product_id','product_name')->get();
-       // dd($product_data);
+        $product_data =Product::all();
+        //$product_data =DB::table('products')->select('product_id','product_name')->get();
+       //dd($product_data);
         return view('signup',compact('product_data'));
     }
 
