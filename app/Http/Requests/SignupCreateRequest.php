@@ -13,7 +13,7 @@ class SignupCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,26 @@ class SignupCreateRequest extends FormRequest
     {
         return [
             'sponsorname' => 'required|max:4',
+            'position' =>'required',
+            'registration_type'=>'required',
+             'first_name' => 'required',
+              'last_name' => 'required',
+             'gender' => 'required',
+             'dob' => 'required|date|before:-18 years',
+             'passport' => 'required',
+               'address1' => 'required|max:255',
+               'country' => 'required|max:255',
+               'state' => 'required|max:255',
+               'city' => 'required|max:255',
+             'email' => 'required|email|max:255',
+            'landline_no' => 'required',
+                 'mobile' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
+                 'username' => 'required',           
+               'password' => 'min:6|required_with:password_confirmation|same:password_confirmation',
+    'password_confirmation' => 'min:6'
         ];
+
+   
     }
     public function messages(){
         return[

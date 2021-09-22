@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests;
+//use App\Http\Requests;
+use App\Http\Requests\SignupCreateRequest;
 use App\Models\Product;
 use App\Models\Signup;
 use App\Models\Country;
@@ -61,9 +62,10 @@ class SignupController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SignupCreateRequest $request)
     {
-     //   dd($request);
+
+    // dd($request);
         Signup::create($request->all());       
         return redirect(route('signup'))->with('message','New User created successfully');
     }

@@ -26,8 +26,28 @@ class Signup extends Model
      * @var string[]
      */
     protected $fillable = [
-        'sponsorname','sponsor_fullname','position','registration_type','product_id','first_name','last_name','gender','dob', 'email', 'password','landline_no','mobile','passport','address1','address2','zipcode','country_id','state_id','city_id','user_name','password','free_account'
-
+        'sponsorname',
+        'sponsor_fullname',
+        'position',
+        'registration_type',
+        'product_id',        
+        'first_name',
+        'last_name',
+        'gender',
+        'dob',
+        'passport',
+        'address1',
+        'address2',
+        'zipcode',
+        'country_id',
+        'state_id',
+        'city_id',
+         'email',         
+          'landline_no',
+          'mobile',        
+          'user_name',
+          'password',
+          'free_account'
     ];
 
     /**

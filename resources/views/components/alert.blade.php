@@ -1,8 +1,8 @@
 <div>
     <!-- I begin to speak only when I am certain what I will say is not better left unsaid - Cato the Younger -->
-    @if(session()->has('message'))
+    @if(session()->has('status'))
     <div class="py-4 px-2 bg-green-200">
-      {{session()->get('message')}}
+      {{session()->get('status')}}
     </div>
     @elseif(session()->has('error'))
     <div class="py-4 px-2 bg-red-200">

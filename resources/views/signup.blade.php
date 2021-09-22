@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <x-guest-layout>
     <x-jet-authentication-card>
@@ -5,8 +8,25 @@
             <x-jet-authentication-card-logo />
         </x-slot>
 
-        <x-jet-validation-errors class="mb-4" />
-        <x-alert/>
+        @if (session('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form method="POST" action="{{ route('addUser') }}">
             @csrf
 
@@ -19,7 +39,7 @@
             <div>
                 <x-jet-label for="sponsor_fullname" value="{{ __('Sponsor Full name*') }}" />
                 <x-jet-input id="sponsor_fullname" class="block mt-1 w-full" type="text" name="sponsor_fullname"
-                    :value="old('sponsor_fullname')" required autofocus autocomplete="sponsor_fullname" />
+                    :value="Auth::user()->name" readonly />
             </div>
 
 
@@ -58,7 +78,7 @@
 
             <div id="product_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="product" value="{{ __('Product*') }}" />
-                <select id="product" class="block mt-1 w-full" name="product">
+                <select id="product" class="block mt-1 w-full" name="product_id">
                     <option value="" selected>Select</option>
                     @foreach($product_data as $product)
                     <option value="{{$product->product_id }}">{{ $product->product_name }}</option>
@@ -70,13 +90,13 @@
             <div>
                 <x-jet-label for="first_name" value="{{ __('First Name*') }}" />
                 <x-jet-input id="first_name" class="block mt-1 w-full" type="text" name="first_name"
-                    :value="old('first_name')" required autofocus autocomplete="first_name" />
+                    :value="old('first_name')"/>
             </div>
 
             <div>
                 <x-jet-label for="last_name" value="{{ __('Last Name*') }}" />
                 <x-jet-input id="last_name" class="block mt-1 w-full" type="text" name="last_name"
-                    :value="old('last_name')" required autofocus autocomplete="last_name" />
+                    :value="old('last_name')"  />
             </div>
 
 
@@ -108,9 +128,9 @@
 
 
             <div>
-                <x-jet-label for="address" value="{{ __('Address Line 1*') }}" />
-                <x-jet-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')"
-                    required autofocus autocomplete="address" />
+                <x-jet-label for="address1" value="{{ __('Address Line 1*') }}" />
+                <x-jet-input id="address1" class="block mt-1 w-full" type="text" name="address1" :value="old('address1')"
+                    required autofocus autocomplete="address1" />
             </div>
 
 
@@ -129,7 +149,7 @@
 
             <div id="country_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="country" value="{{ __('Country*') }}" />
-                <select id="country" class="block mt-1 w-full" name="country">
+                <select id="country" class="block mt-1 w-full" name="country_id">
                     <option value="" selected>Select</option>
 
                     @foreach ($datas as $data)
@@ -142,14 +162,14 @@
 
             <div id="state_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="state" value="{{ __('State*') }}" />
-                <select id="state" class="block mt-1 w-full" name="state">
+                <select id="state" class="block mt-1 w-full" name="state_id">
                     
                 </select>
             </div>
 
             <div id="city_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="city" value="{{ __('City*') }}" />
-                <select id="city" class="block mt-1 w-full" name="city">
+                <select id="city" class="block mt-1 w-full" name="city_id">
                     
                 </select>
             </div>
@@ -207,7 +227,11 @@
 </x-guest-layout>
 
 
+@section('script')
 <script>
+
+  
+
 $(document).ready(function() {
 console.log("hi");
 $('#registration_type').on('change', function() {
@@ -269,5 +293,5 @@ $('#state').on('change', function () {
             });
 });
 </script>
-
+@endsection
 

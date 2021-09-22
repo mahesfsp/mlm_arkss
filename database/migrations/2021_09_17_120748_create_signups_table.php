@@ -18,8 +18,8 @@ class CreateSignupsTable extends Migration
                 $table->string('sponsorname');
                 $table->string('sponsor_fullname');
                 $table->string('position');
-                $table->integer('registration_type');
-                $table->integer('product_id');
+                $table->string('registration_type');
+                $table->integer('product_id')->nullable();
                 $table->string('first_name');
                 $table->string('last_name');
                 $table->string('gender');
@@ -36,7 +36,7 @@ class CreateSignupsTable extends Migration
                 $table->string('mobile')->unique();       
                 $table->string('user_name');
                 $table->string('password');
-                $table->boolean('free_account')->default(false);
+                $table->boolean('free_account')->nullable();
                 $table->rememberToken();
                 $table->timestamps();
         });

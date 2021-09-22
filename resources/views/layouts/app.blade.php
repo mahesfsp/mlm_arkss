@@ -41,15 +41,17 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+            
             </main>
         </div>
         <div class="container">
     @yield('content')
+    
 </div>
         @stack('modals')
 
         @livewireScripts
         @stack('scripts')
     </body>
+    @yield('script')
 </html>
