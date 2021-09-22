@@ -10,7 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Database\Eloquent\Model;
 class Signup extends Model
 {
     use HasApiTokens;
@@ -26,7 +26,8 @@ class Signup extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'sponsorname','sponsor_fullname','position','registration_type','product_id','first_name','last_name','gender','dob', 'email', 'password','landline_no','mobile','passport','address1','address2','zipcode','country_id','state_id','city_id','user_name','password','free_account'
+
     ];
 
     /**

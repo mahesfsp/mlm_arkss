@@ -3,8 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+//use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests;
 use App\Models\Product;
+use App\Models\Signup;
+use App\Models\Country;
+use App\Models\State;
+use App\Models\City;
+use Validator;
+use Response;
+use Redirect;
+//use App\Models\{Country, State, City};
 class SignupController extends Controller
 {
     /**
@@ -25,11 +35,26 @@ class SignupController extends Controller
     public function create()
     {
         $product_data =Product::all();
-        //$product_data =DB::table('products')->select('product_id','product_name')->get();
-       //dd($product_data);
-        return view('signup',compact('product_data'));
+        $datas =Country::all();
+      // $datas['countries'] =Country::get(["name", "id"]);        
+       return view('signup',compact(['product_data','datas']));
+      
     }
 
+    
+    public function fetchState(Request $request)
+    {     
+        $datas['states'] = State::where("country_id",$request->country_id)->get(["name", "id"]);
+        return response()->json($datas);
+    }
+
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where("state_id",$request->state_id)->get(["name", "id"]);
+        return response()->json($data);
+    }
+
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -38,7 +63,9 @@ class SignupController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+     //   dd($request);
+        Signup::create($request->all());       
+        return redirect(route('signup'))->with('message','New User created successfully');
     }
 
     /**

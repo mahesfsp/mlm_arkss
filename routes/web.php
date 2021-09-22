@@ -16,7 +16,9 @@ use App\Http\Livewire\Select2Dropdown;
 Route::get('/', function () {
     return view('welcome');
 });
-//Route::get('/', Select2Dropdown::class);
+
+Route::post('api/fetch-states', [App\Http\Controllers\SignupController::class, 'fetchState']);
+Route::post('api/fetch-cities', [App\Http\Controllers\SignupController::class, 'fetchCity']);
 Route::get('/signup',[App\Http\Controllers\SignupController::class, 'create'])->name('signup');
 Route::post('/addUser',[App\Http\Controllers\SignupController::class, 'store'])->name('addUser');
 

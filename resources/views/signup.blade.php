@@ -6,14 +6,14 @@
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
-
+        <x-alert/>
         <form method="POST" action="{{ route('addUser') }}">
             @csrf
 
             <div>
                 <x-jet-label for="sponsorname" value="{{ __('Sponsor Username*') }}" />
                 <x-jet-input id="sponsorname" class="block mt-1 w-full" type="text" name="sponsorname"
-                    :value="old('sponsorname')" required autofocus autocomplete="sponsorname" />
+                    :value="old('sponsorname')" autocomplete="sponsorname" />
             </div>
 
             <div>
@@ -131,8 +131,11 @@
                 <x-jet-label for="country" value="{{ __('Country*') }}" />
                 <select id="country" class="block mt-1 w-full" name="country">
                     <option value="" selected>Select</option>
-                    @foreach($product_data as $product)
-                    <option value="{{$product->product_id }}">{{ $product->product_name }}</option>
+
+                    @foreach ($datas as $data)
+                    <option value="{{$data->id}}">
+                        {{$data->name}}
+                    </option>
                     @endforeach
                 </select>
             </div>
@@ -140,19 +143,16 @@
             <div id="state_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="state" value="{{ __('State*') }}" />
                 <select id="state" class="block mt-1 w-full" name="state">
-                    <option value="" selected>Select</option>
-                    @foreach($product_data as $product)
-                    <option value="{{$product->product_id }}">{{ $product->product_name }}</option>
-                    @endforeach
+                    
                 </select>
             </div>
 
-            <div class="mt-4">
+            <div id="city_container" class="col-span-6 sm:col-span-4">
                 <x-jet-label for="city" value="{{ __('City*') }}" />
-                <x-jet-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city')"
-                    required />
+                <select id="city" class="block mt-1 w-full" name="city">
+                    
+                </select>
             </div>
-
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email*') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
@@ -192,9 +192,8 @@
             </div>
 
             <div class="mt-4">
-                <x-jet-label for="terms" value="{{ __('Check this for free account') }}" />
-                <x-jet-input id="terms" class="block mt-1 w-full" type="checkbox"
-                    name="terms" />
+                <x-jet-label for="free_account" value="{{ __('Check this for free account') }}" />
+                <x-jet-input id="free_account" class="block mt-1 w-full" type="checkbox" name="free_account" />
             </div>
 
 
@@ -210,14 +209,65 @@
 
 <script>
 $(document).ready(function() {
-    console.log("hi");
-    $('#registration_type').on('change', function() {
-        //alert(this.value );
-        if (this.value === 'company_account' || this.value === 'pl_account') $('#product_container')
-            .hide();
-        else
-        if (this.value === 'normal_registration' || this.value === '') $('#product_container').show();
+console.log("hi");
+$('#registration_type').on('change', function() {
+    //alert(this.value );
+    if (this.value === 'company_account' || this.value === 'pl_account') $('#product_container')
+        .hide();
+    else
+    if (this.value === 'normal_registration' || this.value === '') $('#product_container').show();
 
+});
+
+
+$('#country').on('change', function() {
+    var idCountry = this.value;
+   // alert({{url('api/fetch-states')}});
+    $("#state").html('');
+    $.ajax({
+        url: "{{url('api/fetch-states')}}",
+        type: "POST",
+        data: {
+            country_id: idCountry,
+            _token: '{{csrf_token()}}'
+        },
+        dataType: 'json',
+        success: function(result) {
+           // alert(result);
+            $('#state').html('<option value="">Select State</option>');
+            $.each(result.states, function(key, value) {
+                $("#state").append('<option value="' + value
+                    .id + '">' + value.name + '</option>');
+            });
+            
+        },error:function(){ 
+        alert("error!!!!");
+    }
     });
 });
+
+
+
+$('#state').on('change', function () {
+                var idState = this.value;                          
+                $.ajax({
+                    url: "{{url('api/fetch-cities')}}",
+                    type: "POST",
+                    data: {
+                        state_id: idState,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#city').html('<option value="">Select City</option>');
+                        $.each(res.cities, function (key, value) {
+                            $("#city").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+});
 </script>
+
+
